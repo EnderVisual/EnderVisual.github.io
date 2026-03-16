@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ender Visual | Explore the Void</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ender-purple: #a136ed;
+            --ender-dark: #050505;
+            --void-bg: #120221;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--ender-dark);
+            color: white;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Фон с эффектом звезд/частиц */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, var(--void-bg) 0%, var(--ender-dark) 100%);
+            z-index: -1;
+        }
+
+        section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 4rem;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            color: var(--ender-purple);
+            text-shadow: 0 0 20px rgba(161, 54, 237, 0.6);
+            margin-bottom: 20px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            opacity: 0.8;
+        }
+
+        /* Анимация левитации */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Кнопка с эффектом свечения */
+        .btn-download {
+            margin-top: 30px;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            background: transparent;
+            border: 2px solid var(--ender-purple);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-decoration: none;
+            box-shadow: 0 0 10px var(--ender-purple);
+        }
+
+        .btn-download:hover {
+            background: var(--ender-purple);
+            box-shadow: 0 0 40px var(--ender-purple);
+            transform: scale(1.1);
+        }
+
+        /* Декоративные частицы (частицы Края) */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--ender-purple);
+            border-radius: 50%;
+            filter: blur(1px);
+            animation: rise 10s infinite linear;
+        }
+
+        @keyframes rise {
+            from { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            to { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            font-size: 0.9rem;
+            opacity: 0.5;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background"></div>
+
+    <section id="hero">
+        <h1>Ender Visual</h1>
+        <p>Погрузитесь в бездну. Визуальное совершенство, вдохновленное миром Края.</p>
+        <div class="scroll-hint">Листайте вниз ↓</div>
+    </section>
+
+    <section id="features">
+        <h2 style="font-size: 2.5rem; color: #d187ff;">Магия в каждом кадре</h2>
+        <p>Плавные переходы, шейдерные эффекты и уникальный интерфейс для вашего опыта.</p>
+    </section>
+
+    <section id="download">
+        <h1>Готовы начать?</h1>
+        <p>Ваше путешествие в Ender Visual начинается здесь.</p>
+        <a href="#" class="btn-download">Скачать EnderVisual</a>
+    </section>
+
+    <script>
+        // Создаем случайные частицы Края
+        function createParticles() {
+            const body = document.body;
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                body.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // Простая анимация появления при скролле
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = 0;
+            section.style.transform = 'translateY(50px)';
+            section.style.transition = 'all 1s ease-out';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
